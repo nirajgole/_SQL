@@ -4,7 +4,7 @@ use redTech
 -- scaler subquery
 SELECT *
 FROM OnlineRetailSales
-WHERE [Order Total] >= 
+WHERE [Order Total] >=
     (SELECT AVG([Order Total])
 FROM OnlineRetailSales)
 

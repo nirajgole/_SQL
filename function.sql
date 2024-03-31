@@ -1,6 +1,6 @@
 -- Transact-SQL Scalar Function Syntax
 CREATE OR ALTER FUNCTION [dbo].get_power
-( 
+(
     @num INT = NULL,
     @pow INT = NULL
 )
@@ -38,7 +38,7 @@ GO
 SELECT top 10
     *
 FROM get_inventory_by_product_category(default)
---calling table-valued function with 
+--calling table-valued function with
 SELECT top 10
     *
 FROM get_inventory_by_product_category('Robots')
