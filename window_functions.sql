@@ -131,6 +131,58 @@ SELECT OrderDate, quantity_by_day,
     LAG(quantity_by_day,5) OVER(order by orderdate asc) as LastDateQuantity_5
 FROM orderbydays
 
+create table lag_department
+(
+dept_id int,
+sales_year date,
+sales_amount float
+);
+truncate table lag_department;
+insert into lag_department
+values 
+(1,'10-10-2024',1500.00),
+(1,'10-10-2023',0.00),
+(1,'10-10-2022',1200.00),
+(2,'10-10-2021',800.00),
+(2,'10-10-2020',500.00),
+(3,'10-10-2019',3000.00),
+(3,'10-10-2018',150.00),
+(3,'10-10-2017',9999.00),
+(4,'10-10-2016',7856.00),
+(5,'10-10-2015',562.00)
+;
+
+select *
+from lag_department;
+
+-- with cte---
+with cte as(
+select 
+	dept_id,
+	sales_amount,
+	lag(sales_amount,1) over(partition by dept_id order by sales_year desc) as prev_salary
+from lag_department)
+
+select * 
+from cte
+where sales_amount > prev_salary;
+
+-- temp table---
+DROP TABLE IF EXISTS t_ranked;
+create temp table t_ranked as
+select 
+	dept_id,
+	sales_amount,
+	sales_year,
+	lag(sales_amount,1,0) over(partition by dept_id order by sales_year desc) as prev_sales_amount
+from lag_department;
+
+select * 
+from t_ranked
+where sales_amount > prev_sales_amount;
+
+
+
 -- Ranking
 -- RANK and DENSE_RANK
 SELECT [last name],
